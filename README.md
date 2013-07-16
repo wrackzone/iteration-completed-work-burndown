@@ -1,4 +1,9 @@
-iteration-completed-work-burndown
-=================================
+iterationcompletedworkburndown
+=========================
 
-A standard iteration burndown chart but with a bar to show completed and accepted work.
+## Overview
+
+
+## License
+
+AppTemplate is released under the MIT license.  See the file [LICENSE](https://raw.github.com/RallyApps/AppTemplate/master/LICENSE) for the full text.
