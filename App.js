@@ -1,3 +1,6 @@
+// <script type="text/javascript" src="https://rally1.rallydev.com/apps/2.0rc1/sdk-debug.js"></script>
+// <script type="text/javascript" src="https://rally1.rallydev.com/apps/2.0rc1/lib/analytics/analytics-all.js"></script>
+
 Ext.define('CustomApp', {
     extend: 'Rally.app.App',
     componentCls: 'app',
@@ -17,28 +20,56 @@ Ext.define('CustomApp', {
     ],
 
     launch: function() {
-        // add the release dropdown selector
-        this.down("#iterationDropDown").add( {
-            xtype: 'rallyiterationcombobox',
-            itemId : 'iterationSelector',
-            listeners: {
-                    select: this._onIterationSelect,
-                    ready: this._onIterationSelect,
-                    scope: this
-            }
-        });
+        
+        // get the timebox scope for the page
+        var timeboxScope = this.getContext().getTimeboxScope();
+        if(timeboxScope) {
+            var record = timeboxScope.getRecord();
+            var name = record.get('Name');
+            console.log("timebox",record);
+            this.gIteration = record.data;
+            this._onIterationSelect();
+            // var startDate = timeboxScope.getType() === 'iteration' ? 
+            //     record.get('StartDate') : record.get('ReleaseStartDate');
+        } else {
+            // add the iteration dropdown selector
+            this.down("#iterationDropDown").add( {
+                xtype: 'rallyiterationcombobox',
+                itemId : 'iterationSelector',
+                listeners: {
+                        select: this._onIterationSelect,
+                        ready: this._onIterationSelect,
+                        scope: this
+                }
+            });
+        }
+        
         // used to save the selected release
-        this.gRelease = null;
+    },
+    
+    onTimeboxScopeChange: function(newTimeboxScope) {
+        this.callParent(arguments);
+        
+        if(newTimeboxScope) {
+            var record = newTimeboxScope.getRecord();
+            console.log("timebox",record);
+            this.gIteration = record.data;
+            this._onIterationSelect();
+        }
     },
     
     _onIterationSelect : function() {
-        var value =  this.down('#iterationSelector').getRecord();
-        console.log("record",value);
-        var iterationId = [value.data.ObjectID];
-        this.gIteration = value.data;
+        
+        if (_.isUndefined( this.getContext().getTimeboxScope())) {
+            var value =  this.down('#iterationSelector').getRecord();
+            this.gIteration = value.data;
+        } 
+        
+        var iterationId = this.gIteration.ObjectID;
         
         Ext.create('Rally.data.lookback.SnapshotStore', {
             autoLoad : true,
+            limit: Infinity,
             listeners: {
                 load: this._onIterationSnapShotData,
                 scope : this
@@ -127,8 +158,8 @@ Ext.define('CustomApp', {
         series[1].data = _.map(series[1].data, function(d) { return _.isNull(d) ? 0 : d; });
         
         var extChart = Ext.create('Rally.ui.chart.Chart', {
-            width: 800,
-            height: 500,
+            // width: 800,
+            // height: 500,
          chartData: {
             categories : series[0].data,
             series : [
@@ -145,7 +176,7 @@ Ext.define('CustomApp', {
                 chart: {
                 },
                 title: {
-                text: 'Iteration Burndown Chart (with Completed/Accepted points)',
+                text: '',
                 x: -20 //center
                 },                        
                 xAxis: {
