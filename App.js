@@ -99,16 +99,13 @@ Ext.define('CustomApp', {
             {as: 'TaskTotal', f: 'sum', field : 'TaskEstimateTotal'},
             {as: 'TaskToDo' ,  f: 'sum', field : 'TaskRemainingTotal'}, 
             {as: 'Completed',  f: 'filteredSum', field : 'PlanEstimate', filterField : 'ScheduleState', filterValues : ['Completed']},
-            {as: 'Accepted',  f: 'filteredSum', field : 'PlanEstimate', filterField : 'ScheduleState', filterValues : ['Accepted']}
+            {as: 'Accepted',  f: 'filteredSum', field : 'PlanEstimate', filterField : 'ScheduleState', filterValues : ['Accepted']},
+            {as: 'TotalScope',  f: 'sum', field : 'PlanEstimate'}
         ];
         
         var derivedFieldsAfterSummary = [
             {   as: 'Ideal', 
                 f : function (row,index,summaryMetrics, seriesData) {
-                    console.log("row",           row);
-                    console.log("index",         index);
-                    console.log("summaryMetrics",summaryMetrics);
-                    console.log("seriesData",    seriesData);
                     var max = seriesData[0].TaskTotal;
                     var increments = seriesData.length - 1;
                     var incAmount = max / increments;
@@ -142,7 +139,8 @@ Ext.define('CustomApp', {
             { name : "TaskToDo",}, 
             { name : "Ideal", color : "#FF0000"}, 
             { name : 'Completed', type : 'column', yAxis:1 }, 
-            { name : 'Accepted',type : 'column', yAxis:1 }
+            { name : 'Accepted',type : 'column', yAxis:1 },
+            { name : 'TotalScope',type : 'column', yAxis:1 }
         ];
         var hc = lumenize.arrayOfMaps_To_HighChartsSeries(calculator.getResults().seriesData, hcConfig);
 
@@ -183,6 +181,7 @@ Ext.define('CustomApp', {
                     tickInterval : 1
                 },
                 yAxis: [{
+                    min : 0,
                     title: {
                         text: 'Count'
                     },
