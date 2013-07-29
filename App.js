@@ -183,7 +183,7 @@ Ext.define('CustomApp', {
                 yAxis: [{
                     min : 0,
                     title: {
-                        text: 'Count'
+                        text: 'Hours'
                     },
                     plotLines: [{
                         value: 0,
@@ -193,7 +193,7 @@ Ext.define('CustomApp', {
                 },
                 {
                     title: {
-                        text: 'Points'
+                        text: 'Story Points'
                     },
                     plotLines: [{
                         value: 0,
