@@ -1,24 +1,23 @@
 // <script type="text/javascript" src="https://rally1.rallydev.com/apps/2.0rc1/sdk-debug.js"></script>
 // <script type="text/javascript" src="https://rally1.rallydev.com/apps/2.0rc1/lib/analytics/analytics-all.js"></script>
 
+
 Ext.define('CustomApp', {
     extend: 'Rally.app.App',
     componentCls: 'app',
     items: [
-    {
-        xtype: 'container',
-        itemId: 'iterationDropDown',
-        columnWidth: 1
-    }
-    
-    ,
-    {
-        xtype: 'container',
-        itemId: 'chart1',
-        columnWidth: 1
-    }    
+        {
+            xtype: 'container',
+            itemId: 'iterationDropDown',
+            columnWidth: 1
+        }
+        ,
+        {
+            xtype: 'container',
+            itemId: 'chart1',
+            columnWidth: 1
+        }    
     ],
-
     launch: function() {
         
         // get the timebox scope for the page
@@ -26,7 +25,7 @@ Ext.define('CustomApp', {
         if(timeboxScope) {
             var record = timeboxScope.getRecord();
             var name = record.get('Name');
-            console.log("timebox",record);
+            
             this.gIteration = record.data;
             this._onIterationSelect();
             // var startDate = timeboxScope.getType() === 'iteration' ? 
@@ -38,21 +37,19 @@ Ext.define('CustomApp', {
                 itemId : 'iterationSelector',
                 listeners: {
                         select: this._onIterationSelect,
-                        ready: this._onIterationSelect,
-                        scope: this
+                        ready:  this._onIterationSelect,
+                        scope:  this
                 }
             });
         }
-        
         // used to save the selected release
     },
-    
     onTimeboxScopeChange: function(newTimeboxScope) {
         this.callParent(arguments);
         
         if(newTimeboxScope) {
             var record = newTimeboxScope.getRecord();
-            console.log("timebox",record);
+            
             this.gIteration = record.data;
             this._onIterationSelect();
         }
@@ -149,7 +146,7 @@ Ext.define('CustomApp', {
     },
 
     _showChart : function(series) {
-        console.log("series",series);        
+              
         var chart = this.down("#chart1");
         chart.removeAll();
         
@@ -178,7 +175,13 @@ Ext.define('CustomApp', {
                 x: -20 //center
                 },                        
                 xAxis: {
-                    tickInterval : 1
+                    //tickInterval : 2,
+                    labels: {
+                        formatter: function() {
+                            var d = new Date(this.value);
+                            return ""+(d.getMonth()+1)+"/"+d.getDate();
+                        }
+                    }
                 },
                 yAxis: [{
                     min : 0,
