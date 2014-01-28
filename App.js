@@ -19,6 +19,8 @@ Ext.define('CustomApp', {
         }    
     ],
     launch: function() {
+
+        console.log("context",this.getContext());
         
         // get the timebox scope for the page
         var timeboxScope = this.getContext().getTimeboxScope();
@@ -103,7 +105,8 @@ Ext.define('CustomApp', {
         var derivedFieldsAfterSummary = [
             {   as: 'Ideal', 
                 f : function (row,index,summaryMetrics, seriesData) {
-                    var max = seriesData[0].TaskTotal;
+                    var max = _.max(_.pluck(seriesData,"TaskTotal"));
+                    // var max = seriesData[0].TaskTotal;
                     var increments = seriesData.length - 1;
                     var incAmount = max / increments;
                     var ideal = Math.floor(100 * (max - index * incAmount)) / 100;
@@ -175,7 +178,7 @@ Ext.define('CustomApp', {
                 x: -20 //center
                 },                        
                 xAxis: {
-                    //tickInterval : 2,
+                    tickInterval : 2,
                     labels: {
                         formatter: function() {
                             var d = new Date(this.value);

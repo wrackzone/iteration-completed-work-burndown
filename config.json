@@ -1,12 +1,13 @@
 {
-    "name": "iterationcompletedworkburndown",
-    "className": "CustomApp",
-    "server": "https://rally1.rallydev.com",
-    "sdk": "2.0p5",
-    "javascript": [
-        "App.js"
-    ],
-    "css": [
-        "app.css"
-    ]
+   "name": "iterationcompletedworkburndown",
+   "className": "CustomApp",
+   "server": "https://rally1.rallydev.com",
+   "sdk": "2.0rc2",
+   "javascript": [
+      "App.js",
+      "https://rally1.rallydev.com/apps/2.0rc2/lib/analytics/analytics-all.js"
+   ],
+   "css": [
+      "app.css"
+   ]
 }
