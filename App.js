@@ -84,14 +84,15 @@ Ext.define('CustomApp', {
                 {
                     property: 'Iteration',
                     operator: 'in',
-                    value: iterationId
+                    value: [iterationId]
                 }
             ]
         });        
     },
     _onIterationSnapShotData : function(store,data,success) {
         
-        var lumenize = window.parent.Rally.data.lookback.Lumenize;
+        // var lumenize = window.parent.Rally.data.lookback.Lumenize;
+        var lumenize = window.Rally.data.lookback.Lumenize;
         var snapShotData = _.map(data,function(d){return d.data});      
 
         var metrics = [
